@@ -55,13 +55,13 @@
             <input type="text" name="name" class="form-control" id="Name" required>
 
             <label for="Email">Email</label>
-            <input type="text" id="Email" placeholder="Enter Your Email...">
+            <input type="text" id="Email" placeholder="Enter Your Email..." required>
 
             <label for="subject">Subject</label>
-            <input type="text" id="subject" placeholder="Enter Your Subject...">
+            <input type="text" id="subject" placeholder="Enter Your Subject..." required>
 
             <label for="message">Message</label>
-            <textarea name="message" id="message" placeholder="Enter Your Message" style="height: 200px;"></textarea>
+            <textarea name="message" id="message" placeholder="Enter Your Message" style="height: 200px;" required ></textarea>
             <input type="button" value="button" onclick="Send()">
         </form>
     </div>
@@ -71,42 +71,36 @@
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+function Send(){
+    var name = document.getElementById("Name").value;
+    var email = document.getElementById("Email").value;
+    var sub = document.getElementById("subject").value;
+    var mess = document.getElementById("message").value;
 
-        function Send(){
+    // Check if any of the fields are empty
+    if (name === '' || email === '' || sub === '' || mess === '') {
+        swal("Error", "Please fill out all fields", "error");
+        return; // Stop execution if any field is empty
+    }
+    var body = "Name: " + name + "<br/> Email:" + email + "<br/> Message:" + mess;
 
-          
-           var name = document.getElementById("Name").value;
-           var email = document.getElementById("Email").value;
-           var sub = document.getElementById("subject").value;
-           var mess = document.getElementById("message").value;
-
-           var body = "Name: " + name + "<br/> Email:" + email + "<br/> Message:" + mess;
-            
-           console.log(body);
-            Email.send({
-             SecureToken : "Enter your SmtpJS Secure Token",
-             To : 'Enter your Receiver mail',
-             From : "Enter your Register mail on elastic",
-             Subject : sub,
-             Body : body
-            }).then(
-                message =>{
-                    if(message=='OK'){
-
-                        swal("Successfull", "Your Data Successfull Received", "success");
-                    }
-                    else{
-
-                        swal("Something Wrong", "Your Data is not Received", "error");
-                    }
-                }
-              );
-
-            
-        
+    // Proceed with sending the email if all fields are filled
+    Email.send({
+        SecureToken : "Enter your SmtpJS Secure Token",
+        To : 'Enter your Receiver mail',
+        From : "Enter your Register mail on elastic",
+        Subject: sub,
+        Body: body
+    }).then(
+        message => {
+            if (message === 'OK') {
+                swal("Success", "Your data has been successfully received", "success");
+            } else {
+                swal("Error", "Something went wrong. Your data was not received", "error");
+            }
         }
-
-       
+    );
+}
 
     </script>
 </body>
